@@ -254,12 +254,13 @@ logging.basicConfig(level=logging.DEBUG)
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## How to Fix and Test:
-Stop using Live Server - Don't open index.html directly
-Update the backend with the fixes above
-Start the backend using python run_app.py
-Access the app at http://localhost:8000 (not via Live Server)
+## Note:
+- Stop using Live Server - Don't open index.html directly
+- Start the backend using python run_app.py
+- Access the app at http://localhost:8000 (not via Live Server)
 
+## 1000 skip traces --> 25$
+## 5000 skip trace within 30 seconds
 
 ---
 
