@@ -39,7 +39,26 @@ os.makedirs("temp", exist_ok=True)
 
 # Mount static files - fix the path
 frontend_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend")
-app.mount("/static", StaticFiles(directory=frontend_path), name="static")
+# app.mount("/static", StaticFiles(directory=frontend_path), name="static")
+# Serve individual static files
+@app.get("/style.css")
+async def get_css():
+    """Serve the CSS file."""
+    css_file = os.path.join(frontend_path, "style.css")
+    if os.path.exists(css_file):
+        return FileResponse(css_file, media_type="text/css")
+    else:
+        raise HTTPException(status_code=404, detail="CSS file not found")
+
+@app.get("/script.js")
+async def get_js():
+    """Serve the JavaScript file."""
+    js_file = os.path.join(frontend_path, "script.js")
+    if os.path.exists(js_file):
+        return FileResponse(js_file, media_type="application/javascript")
+    else:
+        raise HTTPException(status_code=404, detail="JavaScript file not found")
+
 
 # In-memory storage for job status (in production, use Redis or database)
 job_status = {}
