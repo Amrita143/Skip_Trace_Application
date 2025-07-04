@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARM Skip Trace - Business Contact Finder</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="logo">
+                <i class="fas fa-search-dollar"></i>
+                ARM Skip Trace
+            </h1>
+            <p class="subtitle">Find business contacts through intelligent web search</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section class="upload-section" id="uploadSection">
+                <div class="upload-card">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h2>Upload CSV File</h2>
+                    <p class="upload-description">
+                        Upload a CSV file containing business information with columns: 
+                        <strong>business_name</strong>, <strong>address</strong>, <strong>web_page</strong>, <strong>other_info</strong>
+                    </p>
+                    
+                    <div class="file-upload-area" id="fileUploadArea">
+                        <input type="file" id="csvFileInput" accept=".csv" hidden>
+                        <div class="upload-content">
+                            <i class="fas fa-file-csv upload-file-icon"></i>
+                            <p>Drag and drop your CSV file here</p>
+                            <span class="or-text">or</span>
+                            <button class="browse-btn" onclick="document.getElementById('csvFileInput').click()">
+                                Browse Files
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="file-info" id="fileInfo" style="display: none;">
+                        <div class="file-details">
+                            <i class="fas fa-file-csv"></i>
+                            <span class="file-name" id="fileName"></span>
+                            <span class="file-size" id="fileSize"></span>
+                        </div>
+                        <button class="upload-btn" id="uploadBtn">
+                            <i class="fas fa-upload"></i>
+                            Start Processing
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Progress Section -->
+            <section class="progress-section" id="progressSection" style="display: none;">
+                <div class="progress-card">
+                    <div class="progress-header">
+                        <h2>Processing Your Data</h2>
+                        <div class="search-animation">
+                            <div class="search-dots">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                            <p class="search-text">Searching internet for business contacts...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <span id="progressText">0 / 0 processed</span>
+                            <span id="progressPercentage">0%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="processing-info">
+                        <div class="info-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Estimated time remaining: <span id="estimatedTime">Calculating...</span></span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-server"></i>
+                            <span>Status: <span id="processingStatus">Initializing...</span></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-header">
+                    <h2>
+                        <i class="fas fa-check-circle"></i>
+                        Processing Complete
+                    </h2>
+                    <div class="results-actions">
+                        <button class="download-btn" id="downloadBtn">
+                            <i class="fas fa-download"></i>
+                            Download CSV
+                        </button>
+                        <button class="new-upload-btn" id="newUploadBtn">
+                            <i class="fas fa-plus"></i>
+                            Process New File
+                        </button>
+                    </div>
+                </div>
+
+                <div class="results-summary">
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="summary-content">
+                            <span class="summary-number" id="totalBusinesses">0</span>
+                            <span class="summary-label">Businesses Processed</span>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="summary-content">
+                            <span class="summary-number" id="totalContacts">0</span>
+                            <span class="summary-label">Contacts Found</span>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="summary-content">
+                            <span class="summary-number" id="successRate">0%</span>
+                            <span class="summary-label">Success Rate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>Results Table</h3>
+                        <div class="table-controls">
+                            <input type="text" id="searchInput" placeholder="Search results..." class="search-input">
+                            <button class="export-btn" onclick="exportToCSV()">
+                                <i class="fas fa-file-export"></i>
+                                Export
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="results-table" id="resultsTable">
+                            <thead>
+                                <tr>
+                                    <th>Business Name</th>
+                                    <th>Business Address</th>
+                                    <th>Contact Numbers</th>
+                                    <th>Search Resources</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsTableBody">
+                                <!-- Results will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 ARM Skip Trace. Built with ❤️ for efficient business contact discovery.</p>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Uploading file...</p>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal" id="errorModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Error</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
