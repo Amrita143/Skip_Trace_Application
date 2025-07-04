@@ -254,13 +254,12 @@ logging.basicConfig(level=logging.DEBUG)
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🤝 Contributing
+## How to Fix and Test:
+Stop using Live Server - Don't open index.html directly
+Update the backend with the fixes above
+Start the backend using python run_app.py
+Access the app at http://localhost:8000 (not via Live Server)
 
-Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.
-
-## 📞 Support
-
-For support and questions, please open an issue in the project repository.
 
 ---
 
